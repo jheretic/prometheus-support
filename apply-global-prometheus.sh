@@ -36,6 +36,7 @@ kubectl apply -f "k8s/${PROJECT}/${CLUSTER}/persistentvolumes"
 kubectl apply -f "k8s/${PROJECT}/${CLUSTER}/services"
 
 # Config maps and Secrets
+kubectl apply -f "k8s/${PROJECT}/${CLUSTER}/configmaps"
 
 ## Blackbox exporter.
 kubectl create configmap blackbox-config \
@@ -99,6 +100,9 @@ fi
 
 # Deployments
 kubectl apply -f "k8s/${PROJECT}/${CLUSTER}/deployments"
+
+# Ingress
+kubectl apply -f "k8s/${PROJECT}/${CLUSTER}/ingress.yml"
 
 # Reload configurations. If the deployment configuration has changed then this
 # request may fail becuase the container has already shutdown.
