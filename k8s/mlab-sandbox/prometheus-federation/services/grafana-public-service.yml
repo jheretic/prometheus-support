@@ -16,8 +16,6 @@ spec:
     # accessible through the service IP and port.
     run: grafana-server
   sessionAffinity: None
-  # Use the same static IP as used for Prometheus.
-  externalIPs:
-    # Use the same IP as above, since we're on a different port.
-    - 35.184.166.181
-  type: ClusterIP
+  # Use a NodePort since this is required for integration with an ingress
+  # controller and the kube-lego TLS configuration.
+  type: NodePort

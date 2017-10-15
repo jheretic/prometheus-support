@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana-tls-ingress
+  annotations:
+    # Enable kube-lego support on this ingress.
+    kubernetes.io/tls-acme: "true"
+    # Use the native GCE ingress controller.
+    kubernetes.io/ingress.class: "gce"
+    # Use a pre-configured static IP address, already registered in DNS.
+    kubernetes.io/ingress.global-static-ip-name: "prometheus-federation-static"
+
+# https://github.com/kelseyhightower/ingress-with-static-ip
+# https://github.com/jetstack/kube-lego/tree/master/examples/gce
+spec:
+  tls:
+  - hosts:
+    - status-mlab-sandbox.measurementlab.net
+    # The secret will be created automatically by kube-lego.
+    secretName: grafana-tls
+  # By not specifying any rules, all incoming requests will be forwarded to
+  # the default backend.
+  backend:
+    serviceName: grafana-public-service
+    servicePort: 3000
