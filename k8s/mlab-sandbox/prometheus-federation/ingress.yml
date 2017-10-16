@@ -8,7 +8,7 @@ metadata:
     # Use the native GCE ingress controller.
     kubernetes.io/ingress.class: "gce"
     # Use a pre-configured static IP address, already registered in DNS.
-    kubernetes.io/ingress.global-static-ip-name: "prometheus-federation-static"
+    kubernetes.io/ingress.global-static-ip-name: "grafana-tls-ingress-static-ip"
 
 # https://github.com/kelseyhightower/ingress-with-static-ip
 # https://github.com/jetstack/kube-lego/tree/master/examples/gce
