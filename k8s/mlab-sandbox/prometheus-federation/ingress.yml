@@ -15,7 +15,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - status-mlab-sandbox.measurementlab.net
+    - grafana.sandbox.mlab.fun
     # The secret will be created automatically by kube-lego.
     secretName: grafana-tls
   # By not specifying any rules, all incoming requests will be forwarded to
