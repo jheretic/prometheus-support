@@ -65,6 +65,15 @@ spec:
         # /etc/grafana/* should contain the M-Lab Grafana configs.
         - mountPath: /etc/grafana
           name: grafana-config
+        # Define a readiness probe for health checks.
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+
       # Disks created manually, can be named here explicitly using
       # gcePersistentDisk instead of the persistentVolumeClaim.
       volumes:
