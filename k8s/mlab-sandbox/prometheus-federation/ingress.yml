@@ -20,6 +20,11 @@ spec:
     secretName: grafana-tls
   # By not specifying any rules, all incoming requests will be forwarded to
   # the default backend.
-  backend:
-    serviceName: grafana-public-service
-    servicePort: 3000
+  rules:
+  - host: grafana.sandbox.mlab.fun
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: grafana-public-service
+          servicePort: 3000
