@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: snmp-exporter 
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      # Used to match pre-existing pods that may be affected during updates.
+      run: snmp-exporter
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  # Pod template.
+  template:
+    metadata:
+      labels:
+        # Note: run=snmp-exporter should match a service config with a
+        # public IP and port so that it is publically accessible.
+        run: snmp-exporter
+    spec:
+      # Place the pod into the Guaranteed QoS by setting equal resource
+      # requests and limits for *all* containers in the pod.
+      # For more background, see:
+      # https://github.com/kubernetes/community/blob/master/contributors/design-proposals/resource-qos.md
+      containers:
+      # Check https://hub.docker.com/r/prom/snmp-exporter/tags/ for the current
+      # stable version.
+      - image: prom/snmp-exporter:v0.12.0
+        name: snmp-exporter
+        args: ["--config.file=/etc/snmp_exporter/snmp_exporter_config.yaml"]
+        ports:
+          - containerPort: 9116
+        resources:
+          requests:
+            memory: "400Mi"
+            cpu: "200m"
+          limits:
+            memory: "400Mi"
+            cpu: "200m"
+        volumeMounts:
+        # Mount the generated configuration for the current project.
+        - mountPath: /snmp_exporter
+          name: switch-config-$(PROJECT)
+          readOnly: true
